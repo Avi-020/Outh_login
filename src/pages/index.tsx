@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
 import jwtDecode from "jwt-decode";
+import Link from 'next/link';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -50,18 +51,31 @@ export default function Home() {
       <div id="signInDiv"></div>
 
       {user && (
-        <div>
-          <img src={user.picture} />
+        <div id="info">
+          {/* <img src={user.picture} />
           <h3>{user.name}</h3>
-          <br />
-          <input type="text" placeholder="Name" /> <br />
-          <br />
-          <input type="number" placeholder="Phone Number" />
-          <br />
-          <br />
-          <button onClick={()=>{
-            alert("working")
-          }}>Submit</button>
+          <br /> */}
+
+          {/* dont show form after sign out  */}
+          {Object.keys(user || {}).length !== 0 && (
+            <div>
+              {/* <input type="text" placeholder="Name" /> <br />
+              <br />
+              <input type="number" placeholder="Phone Number" />
+              <br />
+              <br />
+              <button
+                onClick={() => {
+                  alert("working");
+                }}
+              >
+                Submit
+              </button> */}
+              <button >  <Link href="/SelectCompany">Select Company</Link> </button> <br /><br />
+              <button> <Link  href="/CreateNewCompany">Create a New Company</Link></button>
+ 
+            </div>
+          )}
         </div>
       )}
 
