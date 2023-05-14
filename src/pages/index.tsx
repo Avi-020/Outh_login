@@ -2,12 +2,14 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
 import jwtDecode from "jwt-decode";
-import Link from 'next/link';
+import Homepage from "./Homepage";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [user, setuser] = useState();
+  const [login, setlogin] = useState(false);
+
 
   function handleCallbackResponse(response) {
     console.log("incoded id token", response.credential);
@@ -18,6 +20,7 @@ export default function Home() {
 
     // for hide the login button
     document.getElementById("signInDiv").hidden = true;
+    document.getElementById("loginform").hidden = true;
   }
 
   function handleSignOut(event) {
@@ -25,6 +28,7 @@ export default function Home() {
     setuser({});
     // show sign up div again
     document.getElementById("signInDiv").hidden = false;
+    document.getElementById("loginform").hidden = false;
   }
 
   useEffect(() => {
@@ -45,9 +49,41 @@ export default function Home() {
   // if have user : signout button
 
   return (
+    <>
     <main
       className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
     >
+      {/* LOgin flow */}
+
+      <div id="loginform">
+        <input type="text" placeholder="User Name" id="User_name" /> <br />
+        <br />
+        <input type="text" placeholder="Password" id="Password" /> <br />
+        <button onClick={()=>{
+          let username=document.getElementById("User_name").value;
+          let pass=document.getElementById("Password").value;
+          if(username=="ABC" && pass=="123"){
+            setuser([{
+              name:"avi",
+
+            }])
+            // alert("right info")
+            document.getElementById("loginform").hidden = true;
+            document.getElementById("signInDiv").hidden = true;
+          }
+          else{
+            alert("wrong info")
+            setuser({});
+
+
+          }
+          
+        }}>Login</button>
+        <div>
+          <button>Forgot Password</button>
+        </div>
+      </div>
+
       <div id="signInDiv"></div>
 
       {user && (
@@ -57,24 +93,10 @@ export default function Home() {
           <br /> */}
 
           {/* dont show form after sign out  */}
-          {Object.keys(user || {}).length !== 0 && (
+          { Object.keys(user || {}).length !== 0 && (
             <div>
-              {/* <input type="text" placeholder="Name" /> <br />
-              <br />
-              <input type="number" placeholder="Phone Number" />
-              <br />
-              <br />
-              <button
-                onClick={() => {
-                  alert("working");
-                }}
-              >
-                Submit
-              </button> */}
-              <button >  <Link href="/SelectCompany">Select Company</Link> </button> <br /><br />
-              <button> <Link  href="/CreateNewCompany">Create a New Company</Link></button>
- 
-            </div>
+              <Homepage />
+            </div> 
           )}
         </div>
       )}
@@ -85,5 +107,6 @@ export default function Home() {
         </button>
       )}
     </main>
+    </>
   );
 }
